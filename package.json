@@ -1,0 +1,39 @@
+{
+  "name": "runtime-canary",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic canary checks for coding-agent runtimes.",
+  "keywords": [
+    "coding-agent",
+    "runtime",
+    "canary",
+    "claude-code",
+    "codex",
+    "developer-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2810029110/runtime-canary.git"
+  },
+  "homepage": "https://github.com/2810029110/runtime-canary#readme",
+  "bugs": {
+    "url": "https://github.com/2810029110/runtime-canary/issues"
+  },
+  "type": "module",
+  "bin": {
+    "runtime-canary": "./src/cli.ts"
+  },
+  "scripts": {
+    "canary": "node src/cli.ts",
+    "demo": "node scripts/demo.mjs",
+    "demo:check": "node scripts/demo.mjs --check",
+    "test": "node --test --test-reporter=spec tests/*.test.ts"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cross-spawn": "^7.0.6"
+  }
+}

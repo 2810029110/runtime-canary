@@ -1,0 +1,39 @@
+name: Runtime adapter request
+description: Propose a coding-agent runtime with a verifiable CLI path.
+title: "[adapter] "
+labels: [adapter]
+body:
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime and repository
+      placeholder: Runtime name and public URL
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Tested CLI version and operating system
+    validations:
+      required: true
+  - type: textarea
+    id: headless
+    attributes:
+      label: Headless invocation
+      description: Show the non-interactive command without including secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Deterministic evidence
+      description: Describe the file, hook, MCP call, or other side effect that can be asserted.
+    validations:
+      required: true
+  - type: textarea
+    id: auth
+    attributes:
+      label: Authentication assumptions
+      description: State what must already be installed or authenticated.
+    validations:
+      required: true

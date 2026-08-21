@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Adapter authoring guide
+    url: https://github.com/2810029110/runtime-canary/blob/main/docs/adapter-authoring.md
+    about: Check the runtime contract before proposing an adapter.

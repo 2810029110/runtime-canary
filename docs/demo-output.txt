@@ -1,0 +1,14 @@
+$ runtime-canary probe --runtime fake
+[+] fake: AVAILABLE (runtime-canary-fake 1.0.0)
+
+$ runtime-canary test --runtime fake
+[+] fake: PASS
+  duration: <measured>
+  isolated workspace cleaned: yes
+  canary: matched
+
+$ runtime-canary test --runtime fake --simulate timeout --timeout 350
+[!] fake: TIMEOUT
+  duration: <measured>
+  isolated workspace cleaned: yes
+  diagnostic: Runtime exceeded the 350ms timeout.

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://runtime-canary.dev/schemas/test-result.schema.json",
+  "title": "Runtime Canary Test Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runtime",
+    "status",
+    "startedAt",
+    "durationMs",
+    "exitCode",
+    "timedOut",
+    "stdout",
+    "stderr",
+    "diagnostic",
+    "evidence",
+    "isolation"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "runtime": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": [
+        "PASS",
+        "ASSERTION_FAILED",
+        "TIMEOUT",
+        "RUNTIME_DEGRADED",
+        "HARNESS_ERROR"
+      ]
+    },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "durationMs": { "type": "number", "minimum": 0 },
+    "exitCode": { "type": ["integer", "null"] },
+    "timedOut": { "type": "boolean" },
+    "stdout": { "type": "string" },
+    "stderr": { "type": "string" },
+    "diagnostic": { "type": ["string", "null"] },
+    "evidence": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "observed", "tokenMatched"],
+          "properties": {
+            "path": { "type": "string" },
+            "observed": { "type": "boolean" },
+            "tokenMatched": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+    "isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workspaceRoot", "cleaned"],
+      "properties": {
+        "workspaceRoot": { "type": "string" },
+        "cleaned": { "type": "boolean" }
+      }
+    }
+  }
+}
