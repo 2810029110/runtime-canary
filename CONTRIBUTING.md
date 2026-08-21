@@ -11,7 +11,7 @@ Requirements: Node.js 22.18 or newer and Git.
 npm install
 npm test
 npm run demo:check
-npm pack --dry-run
+npm run package:check
 ```
 
 Tests must not require a paid model account, modify global CLI configuration,

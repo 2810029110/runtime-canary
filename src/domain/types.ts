@@ -31,10 +31,24 @@ export interface RuntimeInvocation {
   env?: Record<string, string | undefined>;
 }
 
+export const SIMULATION_MODES = [
+  "success",
+  "timeout",
+  "startup-failure",
+  "secret",
+  "authentication",
+  "network",
+  "permission",
+  "configuration",
+  "missing-evidence",
+] as const;
+
+export type SimulationMode = (typeof SIMULATION_MODES)[number];
+
 export interface RuntimeContext {
   projectDir: string;
   canaryToken: string;
-  simulation: "success" | "timeout" | "startup-failure" | "secret";
+  simulation: SimulationMode;
   secret?: string;
 }
 
@@ -86,4 +100,75 @@ export interface TestResult {
     workspaceRoot: string;
     cleaned: boolean;
   };
+}
+
+export const DOCTOR_STATUSES = [
+  "READY",
+  "DEGRADED",
+  "UNAVAILABLE",
+  "UNVERIFIED",
+] as const;
+
+export type DoctorStatus = (typeof DOCTOR_STATUSES)[number];
+export type DoctorCheckStatus = "PASS" | "FAIL" | "NOT_RUN";
+export type DoctorFindingCategory =
+  | "discovery"
+  | "authentication"
+  | "network"
+  | "permissions"
+  | "configuration"
+  | "runtime"
+  | "evidence"
+  | "cleanup";
+
+export interface DoctorFinding {
+  code: string;
+  category: DoctorFindingCategory;
+  summary: string;
+  action: string;
+}
+
+export interface DoctorCanarySummary {
+  status: TestStatus;
+  durationMs: number;
+  exitCode: number | null;
+  timedOut: boolean;
+  evidence: CanaryEvidence | null;
+  cleaned: boolean;
+}
+
+export interface DoctorRuntimeResult {
+  runtime: string;
+  displayName: string;
+  status: DoctorStatus;
+  version: string | null;
+  durationMs: number;
+  probeStatus: ProbeStatus;
+  canary: DoctorCanarySummary | null;
+  checks: {
+    discovery: DoctorCheckStatus;
+    launch: DoctorCheckStatus;
+    task: DoctorCheckStatus;
+    evidence: DoctorCheckStatus;
+    cleanup: DoctorCheckStatus;
+  };
+  findings: DoctorFinding[];
+}
+
+export interface DoctorReport {
+  schemaVersion: 1;
+  mode: "probe" | "live";
+  generatedAt: string;
+  durationMs: number;
+  summary: {
+    total: number;
+    ready: number;
+    degraded: number;
+    unavailable: number;
+    unverified: number;
+    checksPassed: number;
+    checksFailed: number;
+    checksNotRun: number;
+  };
+  runtimes: DoctorRuntimeResult[];
 }

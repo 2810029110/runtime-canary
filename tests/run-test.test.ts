@@ -55,6 +55,30 @@ test("startup failure is distinct from an assertion failure", async () => {
   assert.equal(result.isolation.cleaned, true);
 });
 
+for (const [simulation, exitCode] of [
+  ["authentication", 18],
+  ["network", 19],
+  ["permission", 20],
+  ["configuration", 21],
+] as const) {
+  test(`${simulation} fixture exits deterministically and cleans isolation`, async () => {
+    const result = await runRuntimeTest(new FakeRuntimeAdapter(), { simulation });
+    assert.equal(result.status, "RUNTIME_DEGRADED");
+    assert.equal(result.exitCode, exitCode);
+    assert.equal(result.isolation.cleaned, true);
+  });
+}
+
+test("missing-evidence fixture completes without writing the canary", async () => {
+  const result = await runRuntimeTest(new FakeRuntimeAdapter(), {
+    simulation: "missing-evidence",
+  });
+  assert.equal(result.status, "ASSERTION_FAILED");
+  assert.equal(result.exitCode, 0);
+  assert.equal(result.evidence?.observed, false);
+  assert.equal(result.isolation.cleaned, true);
+});
+
 test("missing canary evidence is an assertion failure and cleans isolation", async () => {
   const result = await runRuntimeTest(new FakeRuntimeAdapter(), {
     verifier: {

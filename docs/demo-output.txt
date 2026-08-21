@@ -1,14 +1,30 @@
-$ runtime-canary probe --runtime fake
-[+] fake: AVAILABLE (runtime-canary-fake 1.0.0)
+$ runtime-canary doctor --runtime fake
+Runtime Canary Doctor (probe only)
+1 runtimes checked in <measured>
+0 ready | 0 degraded | 0 unavailable | 1 unverified
+checks: 2 passed | 0 failed | 3 not run
 
-$ runtime-canary test --runtime fake
-[+] fake: PASS
-  duration: <measured>
-  isolated workspace cleaned: yes
-  canary: matched
+[?] Deterministic fake runtime: UNVERIFIED (runtime-canary-fake 1.0.0)
+  runtime: Executable discovery passed; end-to-end tool use was not tested.
+  next: Rerun doctor with --live to verify a real task and deterministic evidence.
 
-$ runtime-canary test --runtime fake --simulate timeout --timeout 350
-[!] fake: TIMEOUT
-  duration: <measured>
-  isolated workspace cleaned: yes
-  diagnostic: Runtime exceeded the 350ms timeout.
+Run with --live to prove model access, tool use, file evidence, and cleanup.
+
+$ runtime-canary doctor --runtime fake --live
+Runtime Canary Doctor (live canary)
+1 runtimes checked in <measured>
+1 ready | 0 degraded | 0 unavailable | 0 unverified
+checks: 5 passed | 0 failed | 0 not run
+
+[+] Deterministic fake runtime: READY (runtime-canary-fake 1.0.0)
+  end-to-end task, file evidence, and cleanup passed in <measured>
+
+$ runtime-canary doctor --runtime fake --live --simulate timeout --timeout 350
+Runtime Canary Doctor (live canary)
+1 runtimes checked in <measured>
+0 ready | 1 degraded | 0 unavailable | 0 unverified
+checks: 3 passed | 1 failed | 1 not run
+
+[!] Deterministic fake runtime: DEGRADED (runtime-canary-fake 1.0.0)
+  runtime: The runtime did not finish the canary before the timeout.
+  next: Check model latency, network connectivity, MCP startup, and stuck child processes.

@@ -28,6 +28,19 @@ if (simulation === "startup-failure") {
   process.exit(17);
 }
 
+const controlledFailures = {
+  authentication: [18, "401 Unauthorized: credential rejected"],
+  network: [19, "WebSocket connection failed: proxy error"],
+  permission: [20, "sandbox workspace is read-only: permission denied"],
+  configuration: [21, "MCP configuration failed to load"],
+};
+
+if (simulation in controlledFailures) {
+  const [exitCode, message] = controlledFailures[simulation];
+  console.error(message);
+  process.exit(exitCode);
+}
+
 if (simulation === "timeout") {
   const grandchild = spawn(process.execPath, [
     "-e",
@@ -43,12 +56,16 @@ if (simulation === "timeout") {
     console.log(`Authorization: Bearer ${process.env.FAKE_SECRET ?? "missing-secret"}`);
   }
 
-  const outputDir = join(workspace, ".runtime-canary");
-  await mkdir(outputDir, { recursive: true });
-  await writeFile(
-    join(outputDir, "canary.json"),
-    `${JSON.stringify({ token, runtime: "fake" }, null, 2)}\n`,
-    "utf8",
-  );
-  console.log("CANARY_WRITTEN");
+  if (simulation === "missing-evidence") {
+    console.log("TASK_COMPLETED_WITHOUT_EVIDENCE");
+  } else {
+    const outputDir = join(workspace, ".runtime-canary");
+    await mkdir(outputDir, { recursive: true });
+    await writeFile(
+      join(outputDir, "canary.json"),
+      `${JSON.stringify({ token, runtime: "fake" }, null, 2)}\n`,
+      "utf8",
+    );
+    console.log("CANARY_WRITTEN");
+  }
 }

@@ -7,12 +7,13 @@ import { createIsolatedWorkspace, type IsolatedWorkspace } from "./workspace.ts"
 import type {
   CanaryVerifier,
   RuntimeAdapter,
+  SimulationMode,
   TestResult,
   TestStatus,
 } from "./domain/types.ts";
 
 export interface RunRuntimeTestOptions {
-  simulation?: "success" | "timeout" | "startup-failure" | "secret";
+  simulation?: SimulationMode;
   timeoutMs?: number;
   secret?: string;
   verifier?: CanaryVerifier;
@@ -37,7 +38,7 @@ export async function runRuntimeTest(
   const workspace = await (options.workspaceFactory ?? createIsolatedWorkspace)();
   const canaryToken = randomUUID();
   const verifier = options.verifier ?? new FileCanaryVerifier();
-  let result: TestResult;
+  let result!: TestResult;
 
   try {
     if (!adapter.createInvocation) {

@@ -1,70 +1,59 @@
-# Success criteria
+# Product scorecard
 
-Runtime Canary is successful only when it is reliable, proves value against a
-real coding-agent runtime, and is useful to people outside the project. GitHub
-stars alone do not meet that standard.
+Runtime Canary measures what an agent runtime can actually complete, not only
+whether its executable responds. The public scorecard is based on reproducible
+capabilities that can be demonstrated from a clean checkout.
 
-## 1. Engineering readiness
+## Observable coverage
 
-These are commit and release gates:
+| Check | `--version` | Doctor probe | Doctor live |
+| --- | :---: | :---: | :---: |
+| Executable discovered | Yes | Yes | Yes |
+| Process launches | Yes | Yes | Yes |
+| Agent task completes | No | No | Yes |
+| Deterministic file evidence matches | No | No | Yes |
+| Isolated workspace is cleaned | No | No | Yes |
 
-- GitHub Actions completes on Ubuntu, macOS, and Windows with no warnings.
-- A fresh, uncached runner installs dependencies, runs the demo, and passes the
-  test suite in less than five minutes.
-- `PASS`, `ASSERTION_FAILED`, `TIMEOUT`, `RUNTIME_DEGRADED`, and
-  `HARNESS_ERROR` have deterministic tests.
-- Every test status reports whether its workspace was cleaned; timeout coverage
-  also proves the grandchild process is no longer alive.
-- The fake control canary has zero false failures in the normal CI suite.
-- npm audit reports no known production dependency vulnerabilities.
+The live Doctor exposes five checkpoints instead of two, a 2.5x increase over
+a version check. A successful process exit without matching evidence does not
+count as a pass.
 
-Engineering readiness means the harness is trustworthy. It does not prove the
-product solves a real coding-agent problem.
+## Reproducible failure coverage
 
-## 2. Product proof
+The deterministic control runtime exercises authentication, network, sandbox
+permission, configuration/MCP, startup, evidence, timeout, secret-redaction,
+and cleanup behavior without a paid model account. Each scenario has an
+expected status, finding code, and cleanup result in the automated test suite.
 
-Target for the first real-adapter milestone:
+## Release checks
 
-- One real, already installed and authenticated coding-agent CLI executes the
-  canary through the shared runner.
-- A documented failure fixture passes the CLI version probe but fails the
-  canary with the correct Runtime Canary status.
-- Five external users obtain their first canary result within five minutes and
-  without maintainer intervention during a 30-day validation period.
-- At least four of those five users can identify the failing layer from the
-  result without reading Runtime Canary source code.
-- At least two users keep the check in a repeated workflow or CI job after 14
-  days.
+- Tests pass on Ubuntu, Windows, and macOS.
+- The deterministic demo matches its checked-in output.
+- The npm tarball installs in a temporary directory and its packaged executable
+  completes a five-layer live canary.
+- Timeout coverage proves the descendant process is terminated.
+- Shareable JSON and Markdown omit raw output and local temporary paths.
+- The production dependency audit reports no known vulnerabilities.
 
-Track false positives and time-to-diagnosis for every real adapter. A canary
-that frequently blames a healthy runtime is not production-ready.
+Run the same checks locally:
 
-## 3. Open-source signals
-
-Review these after 30 days:
-
-- Three substantive issues, discussions, or adapter proposals from people who
-  ran the tool.
-- One external contribution or independently verified adapter result.
-- Stars and unique clones are recorded as reach indicators only. Initial
-  directional targets are 10 stars and 25 unique clones, but neither overrides
-  failed product-proof gates.
-
-The useful conversion is:
-
-```text
-repository visit -> successful demo -> real runtime attempt -> feedback or contribution
+```bash
+npm test
+npm run demo:check
+npm run package:check
+npm audit --omit=dev
 ```
 
-GitHub traffic cannot prove each step automatically. Record anonymized counts
-from GitHub traffic and issue/PR activity; do not add product telemetry merely
-to inflate the metric.
+## Adoption metrics
 
-## Decision rule
+After release, track the funnel that shows whether the product story converts:
 
-- **Continue investment:** engineering gates pass and real-adapter validation
-  shows users diagnose a failure faster than with version checks alone.
-- **Revise positioning:** engineering gates pass but users treat it as a generic
-  process runner or cannot understand the status output.
-- **Stop or redesign:** a real adapter cannot produce stable deterministic
-  evidence, or false positives remain common after two focused iterations.
+```text
+repository visit -> packaged CLI run -> live runtime attempt -> shared report
+```
+
+Useful measurements are successful packaged runs, live attempts by runtime,
+finding-code distribution from user-submitted reports, time to identify the
+failing layer, repeat CI usage, and external adapter contributions. Runtime
+Canary does not add telemetry; published numbers should come from GitHub traffic,
+issues, pull requests, and voluntarily shared reports.

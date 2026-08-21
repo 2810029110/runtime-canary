@@ -16,3 +16,7 @@ export function getRuntimeAdapter(id: string): RuntimeAdapter | undefined {
 export function runtimeIds(): string[] {
   return adapters.map((adapter) => adapter.id);
 }
+
+export function runtimeAdapters(): RuntimeAdapter[] {
+  return [...adapters];
+}

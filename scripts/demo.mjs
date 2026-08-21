@@ -28,17 +28,19 @@ async function run(args, expectedCode) {
         reject(new Error(`Command exited with ${code}; expected ${expectedCode}.\n${stderr}`));
         return;
       }
-      resolve(stdout.trim().replace(/duration: \d+ms/g, "duration: <measured>"));
+      resolve(stdout.trim()
+        .replace(/duration: \d+ms/g, "duration: <measured>")
+        .replace(/in \d+ms/g, "in <measured>"));
     });
   });
 }
 
 const scenarios = [
-  { label: "runtime-canary probe --runtime fake", args: ["probe", "--runtime", "fake"], code: 0 },
-  { label: "runtime-canary test --runtime fake", args: ["test", "--runtime", "fake"], code: 0 },
+  { label: "runtime-canary doctor --runtime fake", args: ["doctor", "--runtime", "fake"], code: 0 },
+  { label: "runtime-canary doctor --runtime fake --live", args: ["doctor", "--runtime", "fake", "--live"], code: 0 },
   {
-    label: "runtime-canary test --runtime fake --simulate timeout --timeout 350",
-    args: ["test", "--runtime", "fake", "--simulate", "timeout", "--timeout", "350"],
+    label: "runtime-canary doctor --runtime fake --live --simulate timeout --timeout 350",
+    args: ["doctor", "--runtime", "fake", "--live", "--simulate", "timeout", "--timeout", "350"],
     code: 1,
   },
 ];

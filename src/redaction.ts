@@ -1,5 +1,5 @@
 const COMMON_SECRET_PATTERNS = [
-  /\bsk-[A-Za-z0-9_-]{12,}\b/g,
+  /\bsk-[A-Za-z0-9_*?-]{8,}\b/g,
   /\b(?:api[_-]?key|access[_-]?token|secret)\s*[=:]\s*[^\s,;]+/gi,
   /\bAuthorization:\s*Bearer\s+[^\s]+/gi,
 ];

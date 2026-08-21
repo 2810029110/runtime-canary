@@ -1,12 +1,15 @@
 {
   "name": "runtime-canary",
   "version": "0.1.0",
-  "private": true,
-  "description": "Returning --version is not enough: deterministic canaries for coding-agent runtimes.",
+  "private": false,
+  "description": "Cross-agent preflight doctor with deterministic tool-use canaries.",
   "keywords": [
     "coding-agent",
     "runtime",
     "canary",
+    "doctor",
+    "diagnostics",
+    "mcp",
     "claude-code",
     "codex",
     "developer-tools"
@@ -21,19 +24,39 @@
   },
   "type": "module",
   "bin": {
-    "runtime-canary": "./src/cli.ts"
+    "runtime-canary": "./dist/cli.js"
   },
+  "files": [
+    "dist/",
+    "src/",
+    "scripts/fake-runtime.mjs",
+    "schemas/",
+    "docs/adapter-authoring.md",
+    "CONTRIBUTING.md"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "canary": "node src/cli.ts",
+    "doctor": "node src/cli.ts doctor",
     "demo": "node scripts/demo.mjs",
     "demo:check": "node scripts/demo.mjs --check",
+    "package:check": "npm run build && node scripts/package-smoke.mjs",
+    "prepack": "npm run build",
     "test": "node --test --test-reporter=spec tests/*.test.ts"
   },
   "engines": {
     "node": ">=22.18.0"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "cross-spawn": "^7.0.6"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/node": "^22.20.1",
+    "typescript": "~5.9.3"
   }
 }

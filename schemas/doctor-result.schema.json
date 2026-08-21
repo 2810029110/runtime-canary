@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://runtime-canary.dev/schemas/doctor-result.schema.json",
+  "title": "Runtime Canary Doctor Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "mode", "generatedAt", "durationMs", "summary", "runtimes"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "mode": { "enum": ["probe", "live"] },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "durationMs": { "type": "number", "minimum": 0 },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "ready", "degraded", "unavailable", "unverified", "checksPassed", "checksFailed", "checksNotRun"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "ready": { "type": "integer", "minimum": 0 },
+        "degraded": { "type": "integer", "minimum": 0 },
+        "unavailable": { "type": "integer", "minimum": 0 },
+        "unverified": { "type": "integer", "minimum": 0 },
+        "checksPassed": { "type": "integer", "minimum": 0 },
+        "checksFailed": { "type": "integer", "minimum": 0 },
+        "checksNotRun": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "runtimes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["runtime", "displayName", "status", "version", "durationMs", "probeStatus", "canary", "checks", "findings"],
+        "properties": {
+          "runtime": { "type": "string", "minLength": 1 },
+          "displayName": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["READY", "DEGRADED", "UNAVAILABLE", "UNVERIFIED"] },
+          "version": { "type": ["string", "null"] },
+          "durationMs": { "type": "number", "minimum": 0 },
+          "probeStatus": { "enum": ["AVAILABLE", "NOT_INSTALLED", "UNEXECUTABLE", "UNSUPPORTED_VERSION"] },
+          "canary": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["status", "durationMs", "exitCode", "timedOut", "evidence", "cleaned"],
+                "properties": {
+                  "status": { "enum": ["PASS", "ASSERTION_FAILED", "TIMEOUT", "RUNTIME_DEGRADED", "HARNESS_ERROR"] },
+                  "durationMs": { "type": "number", "minimum": 0 },
+                  "exitCode": { "type": ["integer", "null"] },
+                  "timedOut": { "type": "boolean" },
+                  "evidence": {
+                    "oneOf": [
+                      { "type": "null" },
+                      {
+                        "type": "object",
+                        "required": ["path", "observed", "tokenMatched"]
+                      }
+                    ]
+                  },
+                  "cleaned": { "type": "boolean" }
+                }
+              }
+            ]
+          },
+          "checks": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["discovery", "launch", "task", "evidence", "cleanup"],
+            "properties": {
+              "discovery": { "$ref": "#/$defs/checkStatus" },
+              "launch": { "$ref": "#/$defs/checkStatus" },
+              "task": { "$ref": "#/$defs/checkStatus" },
+              "evidence": { "$ref": "#/$defs/checkStatus" },
+              "cleanup": { "$ref": "#/$defs/checkStatus" }
+            }
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["code", "category", "summary", "action"],
+              "properties": {
+                "code": { "type": "string", "minLength": 1 },
+                "category": { "enum": ["discovery", "authentication", "network", "permissions", "configuration", "runtime", "evidence", "cleanup"] },
+                "summary": { "type": "string", "minLength": 1 },
+                "action": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "checkStatus": { "enum": ["PASS", "FAIL", "NOT_RUN"] }
+  }
+}
