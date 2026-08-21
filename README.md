@@ -130,6 +130,22 @@ scope until that path is reliable.
 See [the adapter authoring guide](docs/adapter-authoring.md) for the runtime
 contract and [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow.
 
+## What success means
+
+Stars are useful distribution signals, but they do not prove that the runtime
+diagnostic works. Runtime Canary uses three gates:
+
+1. **Engineering ready:** warning-free CI on three operating systems and a
+   clean runner that installs, runs the demo, and passes tests within five
+   minutes.
+2. **Product proven:** one real coding-agent CLI passes a verified canary and
+   the tool catches a failure that `--version` misses.
+3. **Externally useful:** five people reproduce the workflow without maintainer
+   help, and at least two keep using it after two weeks.
+
+The complete measurements and 30-day signals are in
+[`docs/success-criteria.md`](docs/success-criteria.md).
+
 ## License
 
 [MIT](LICENSE)

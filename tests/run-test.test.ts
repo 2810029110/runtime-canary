@@ -55,6 +55,26 @@ test("startup failure is distinct from an assertion failure", async () => {
   assert.equal(result.isolation.cleaned, true);
 });
 
+test("missing canary evidence is an assertion failure and cleans isolation", async () => {
+  const result = await runRuntimeTest(new FakeRuntimeAdapter(), {
+    verifier: {
+      async verify(_projectDir, spec) {
+        return {
+          path: spec.relativePath,
+          observed: false,
+          tokenMatched: false,
+        };
+      },
+    },
+  });
+
+  assert.equal(result.status, "ASSERTION_FAILED");
+  assert.equal(result.exitCode, 0);
+  assert.equal(result.evidence?.observed, false);
+  assert.equal(result.isolation.cleaned, true);
+  assert.equal(await exists(result.isolation.workspaceRoot), false);
+});
+
 test("secrets are redacted before returning a result", async () => {
   const secret = "doctor-secret-value-12345";
   const result = await runRuntimeTest(new FakeRuntimeAdapter(), {

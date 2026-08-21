@@ -16,8 +16,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22.18.0
           cache: npm
@@ -25,3 +25,15 @@ jobs:
       - run: npm test
       - run: npm run demo:check
       - run: npm pack --dry-run
+
+  clean-runner-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.18.0
+      - run: npm ci
+      - run: npm run demo
+      - run: npm test
