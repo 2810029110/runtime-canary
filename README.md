@@ -3,7 +3,7 @@
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
 
-**Stop guessing whether your coding-agent runtime is healthy.**
+**Returning `--version` is not enough: deterministic canaries for coding-agent runtimes.**
 
 A CLI can pass `--version` and still fail while loading a skill, reading
 configuration, starting an MCP server, or invoking a tool. Runtime Canary runs
