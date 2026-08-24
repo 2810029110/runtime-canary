@@ -6,6 +6,9 @@
 
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-339933?logo=node.js&logoColor=white)](package.json)
+[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-59636e)](.github/workflows/ci.yml)
 
 ## 🔎 `--version` is not enough
 
@@ -13,6 +16,11 @@ Running a version command only proves the binary can start; it says nothing
 about expired authentication, blocked networks, sandbox writes, or tool use.
 Runtime Canary runs a five-layer deterministic check and returns evidence you
 can inspect, share, and act on.
+
+[![Runtime Canary detects a controlled configuration failure after a successful version probe](docs/assets/runtime-canary-demo.gif)](docs/assets/runtime-canary-demo.gif)
+
+*Recorded from the deterministic fixture: the executable is available, but the
+live canary attributes a controlled configuration failure.*
 
 | What you need to know | Standard `--version` | Runtime Canary `doctor --live` |
 | --- | :---: | :---: |

@@ -6,12 +6,20 @@
 
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-339933?logo=node.js&logoColor=white)](package.json)
+[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-59636e)](.github/workflows/ci.yml)
 
 ## 🔎 `--version` 远远不够
 
 版本号只能证明程序能够启动，却无法告诉你认证是否过期、网络是否受阻、
 沙箱能否写入，以及 Agent 是否真的调用了工具。Runtime Canary 通过五层确定性
 检查，把“应该能用”变成可以检查、分享和采取行动的证据。
+
+[![Runtime Canary 在版本探测成功后识别受控配置故障](docs/assets/runtime-canary-demo.gif)](docs/assets/runtime-canary-demo.gif)
+
+*动图来自确定性 fixture：可执行文件能够正常启动，但 live canary 精确归因了
+一个受控配置故障。*
 
 | 你真正想知道的 | 普通 `--version` | Runtime Canary `doctor --live` |
 | --- | :---: | :---: |
