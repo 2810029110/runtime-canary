@@ -1,13 +1,13 @@
-# Runtime Canary
+# Runtime Canary: Beyond `--version` for Coding Agents
 
 **English** | [简体中文](README.zh-CN.md)
+
+*Deterministic canary checks & layer-by-layer failure attribution in isolated sandboxes.*
 
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
 
-## 🔎 Beyond `--version`
-
-**One command to verify your coding agent actually works.**
+## 🔎 `--version` is not enough
 
 Running a version command only proves the binary can start; it says nothing
 about expired authentication, blocked networks, sandbox writes, or tool use.

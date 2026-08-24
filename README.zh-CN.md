@@ -1,13 +1,13 @@
-# Runtime Canary
+# Runtime Canary：让 Coding Agent 超越 `--version`
 
 [English](README.md) | **简体中文**
+
+*在隔离沙箱中运行确定性 Canary，并逐层定位失败原因。*
 
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
 
-## 🔎 超越 `--version`
-
-**一条命令，验证你的 Coding Agent 真的能工作。**
+## 🔎 `--version` 远远不够
 
 版本号只能证明程序能够启动，却无法告诉你认证是否过期、网络是否受阻、
 沙箱能否写入，以及 Agent 是否真的调用了工具。Runtime Canary 通过五层确定性
