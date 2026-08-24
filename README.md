@@ -1,22 +1,25 @@
 # Runtime Canary
 
+**English** | [简体中文](README.zh-CN.md)
+
 [![CI](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml/badge.svg)](https://github.com/2810029110/runtime-canary/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f855a.svg)](LICENSE)
 
-## 🔎 超越 `--version`
+## 🔎 Beyond `--version`
 
-**一条命令，验证你的 Coding Agent 真的能工作。**
+**One command to verify your coding agent actually works.**
 
-版本号只能证明程序能够启动，却无法告诉你认证是否过期、网络是否受阻、
-沙箱能否写入，以及 Agent 是否真的调用了工具。Runtime Canary 通过五层确定性
-检查，把“应该能用”变成可以检查、分享和采取行动的证据。
+Running a version command only proves the binary can start; it says nothing
+about expired authentication, blocked networks, sandbox writes, or tool use.
+Runtime Canary runs a five-layer deterministic check and returns evidence you
+can inspect, share, and act on.
 
-| 你真正想知道的 | 普通 `--version` | Runtime Canary `doctor --live` |
+| What you need to know | Standard `--version` | Runtime Canary `doctor --live` |
 | --- | :---: | :---: |
-| 可执行文件能否启动？ | ✅ | ✅ |
-| Agent 能否完成真实任务？ | ❓ 未验证 | ✅ 已验证 |
-| 工具是否生成了指定证据？ | ❓ 未验证 | ✅ 已验证 |
-| 隔离工作区是否清理完成？ | ❓ 未验证 | ✅ 已验证 |
+| Can the executable launch? | ✅ | ✅ |
+| Can the agent finish a real task? | ❓ Not tested | ✅ Verified |
+| Did its tools produce the exact artifact? | ❓ Not tested | ✅ Verified |
+| Was the isolated workspace cleaned? | ❓ Not tested | ✅ Verified |
 
 ```text
 $ npm run doctor -- --runtime fake --live
@@ -26,11 +29,12 @@ checks: 5 passed | 0 failed | 0 not run
 ```
 
 > [!IMPORTANT]
-> **能力边界：**Runtime Canary 只检测你已有的 CLI 安装和现有认证状态；
-> 不安装 Agent CLI、不管理凭据，也不执行 Claude、Codex 或 Gemini 登录。
-> 当前覆盖：Codex（live canary）、Claude Code（仅 probe）。
+> **Scope:** Runtime Canary tests existing CLI installations using your current
+> authentication. It does not install agent CLIs, manage credentials, or perform
+> Claude, Codex, or Gemini logins. Current coverage: Codex (live canary),
+> Claude Code (probe-only).
 
-## ⚡ 快速开始
+## ⚡ Quickstart
 
 ```bash
 git clone https://github.com/2810029110/runtime-canary.git
@@ -39,8 +43,8 @@ npm install
 npm run doctor
 ```
 
-默认 Doctor 会免费检查真实 adapter 的可执行文件和版本。指定 runtime 并加入
-`--live`，即可运行完整 Canary：
+The default Doctor performs free executable and version probes across the real
+adapters. Select a runtime and add `--live` to run the complete canary:
 
 ```bash
 npm run doctor -- --runtime codex --live --timeout 120000
@@ -48,8 +52,8 @@ npm run doctor -- --runtime fake --live
 ```
 
 > [!NOTE]
-> `--live` 可能通过 runtime 的现有认证发起真实模型请求，并消耗套餐额度或
-> API 用量。
+> `--live` may make a real model request through the runtime's existing
+> authentication and can consume plan or API usage.
 
 ## Five layers, one result
 
